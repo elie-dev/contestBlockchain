@@ -11,7 +11,7 @@ class Block:
             self.parent_hash = parent_hash
             self.base_hash = base_hash
             self.hash = self.createHash(base_hash)
-            self.transactions = []
+            self.transactions = {}
             self.save()
         else:
             # genere un wallet a partir d'un json
@@ -51,7 +51,7 @@ class Block:
             print("transaction annulé solde insufisant")
             return
         recepteur.send(a, "recepteur", montant)
-        self.transactions.append(a)
+        self.transactions.update(a)
         self.save()
 
     def get_transaction(self, transaction):

@@ -4,10 +4,10 @@ import os
 
 class Wallet:
 
-    def __init__(self,  unique_id = "", balance = 100, history = []):
+    def __init__(self,  unique_id = "", balance = 100, history = {}):
         if unique_id == "" :
             # genere un nouveau wallet
-            self.unique_id = self.generate_unique_id()
+            self.unique_id = self.generate_unique_id(self)
             self.balance = balance
             self.history = history
             self.save()
@@ -45,7 +45,7 @@ class Wallet:
                 return False
         else:
             self.add_balance(montant)
-        self.history.append(transaction)
+        self.history.update(transaction)
         self.save()
     
     def save(self):
@@ -66,9 +66,10 @@ class Wallet:
     def load(self):
 
         pathToFile = 'content/wallets/' + self.unique_id + '.json'
-
-        with open(pathToFile) as file:
-            data = json.loads(file.read())
-        return data
+        file_exists = os.path.exists(pathToFile)
+        if file_exists:
+            with open(pathToFile) as file:
+                data = json.loads(file.read())
+            return data
 
 
